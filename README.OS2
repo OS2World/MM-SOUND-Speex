@@ -1,0 +1,64 @@
+This package contains Speex encoder/decoder for encoding/decoding
+Speex compressed audiofiles.
+
+Just in case someone needs it or want's to play with ;-)
+
+Project hompeage is:  http://www.speex.org/
+
+You find the documentation in share\doc\speex\manual.pdf
+
+Compiled for OS/2 / eComStation with gcc3.3.5
+ ( ftp://ftp.netlabs.org/pub/gcc )
+
+It ( http://downloads.xiph.org/releases/speex/speex-1.2beta3.tar.gz )
+needs two modifications:
+
+---cut---
+--- o:speexenc.c	2007-12-08 05:01:08.000000000 +0100
++++ speexenc.c	2008-01-12 00:47:06.000000000 +0100
+@@ -514,6 +514,8 @@
+    {
+ #if defined WIN32 || defined _WIN32
+          _setmode(_fileno(stdin), _O_BINARY);
++#elif defined OS2
++         _fsetmode(stdin,"b");
+ #endif
+       fin=stdin;
+    }
+---cut---
+
+and
+
+---cut---
+--- o:speexdec.c	2007-12-08 05:01:08.000000000 +0100
++++ speexdec.c	2008-01-12 00:48:00.000000000 +0100
+@@ -231,6 +231,8 @@
+       {
+ #if defined WIN32 || defined _WIN32
+          _setmode(_fileno(stdout), _O_BINARY);
++#elif defined OS2
++         _fsetmode(stdout,"b");
+ #endif
+          fout=stdout;
+       }
+---cut---
+
+but compiled 'out of the box' with
+
+ configure
+ make
+ make install
+
+Additional requirements: gcc-3.3.5-csd3-runtime
+ (ftp://ftp.netlabs.org/pub/gcc/libc-0.6.3-csd3.zip)
+
+History:
+20080111
+ speex-1_2beta3
+  initial version
+
+20080112
+ speex-1_2beta3r2
+  FIX: set stdin/stdout to binary mode
+
+fbakan@gmx.net 12.1.2008
